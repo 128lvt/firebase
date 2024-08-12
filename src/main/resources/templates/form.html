@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ngApp="myApp">
+<html lang="en" ng-app="myApp">
 
 <head>
     <!-- Bootstrap CSS -->
@@ -43,7 +43,7 @@
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
-
+                    <th>STT</th>
                     <th>Id</th>
                     <th>Fullname</th>
                     <th>Mark</th>
@@ -59,6 +59,12 @@
                     <td>{{student.name}}</td>
                     <td>{{student.mark}}</td>
                     <td>{{student.major}}</td>
+                    <td>
+                        <a th:href="@{|/student/edit/${student.id}|}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                    <td>
+                        <a th:href="@{|/student/delete/${student.id}|}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

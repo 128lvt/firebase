@@ -57,24 +57,33 @@ app.controller("StudentController", function ($scope, $http) {
       });
   };
 
-  $scope.openEditProductModal = function (id) {
-    $scope.editId = id;
-    $scope.selectedProduct = $scope.products.find((p) => p.id === id);
+  $scope.openEditProductModal = function(studentId) {
+    // Lặp qua các sinh viên để tìm key tương ứng với ID sinh viên
+    for (var key in $scope.students) {
+      if ($scope.students[key].id === studentId) {
+        $scope.editKey = key;
+        $scope.selectedProduct = angular.copy($scope.students[key]); // Sao chép thông tin sinh viên cần chỉnh sửa
+        break;
+      }
+    }
+    console.log($scope.editKey);  // Kiểm tra key đã tìm thấy
     $("#editProductModal").modal("show");
-  };
+  };  
 
-  $scope.editProduct = function () {
+  $scope.editProduct = function() {
     $http
-      .put(API_PREFIX + "products/" + $scope.editId, $scope.selectedProduct,{
+      .put(API_PREFIX + "students/" + $scope.editKey, $scope.selectedProduct, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then(function (response) {
-        $scope.getProducts();
+      .then(function(response) {
+        console.log('Product updated successfully');
+        $scope.getStudents(); // Cập nhật lại danh sách sau khi chỉnh sửa
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function(error) {
+        console.log('Error updating product:', error);
       });
   };
+  
 });

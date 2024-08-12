@@ -54,7 +54,7 @@
             <td>{{student.mark}}</td>
             <td>{{student.major}}</td>
             <td>
-              <a href="#" class="edit" ng-click="openEditProductModal(product.id)" data-toggle="modal">
+              <a href="#" class="edit" ng-click="openEditProductModal(student.id)" data-toggle="modal">
                 <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
               </a>
               <a href="#" class="delete" ng-click="openDeleteModal(student.id)" data-toggle="modal">
@@ -113,18 +113,28 @@
       <div class="modal-content">
         <form id="editForm" ng-submit="editProduct()" enctype="multipart/form-data">
           <div class="modal-header">
-            <h4 class="modal-title">Edit Product</h4>
+            <h4 class="modal-title">Edit Student</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label for="editName">Name</label>
-              <input type="text" class="form-control" id="editName" ng-model="selectedProduct.name" required />
+              <label for="id">ID</label>
+              <input type="text" id="id" ng-model="selectedProduct.id" class="form-control" required />
             </div>
-            <div class="form-group">`
-              <label for="editPrice">Price</label>
-              <input type="number" step="0.1" class="form-control" id="editPrice" ng-model="selectedProduct.price"
-                required />
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" ng-model="selectedProduct.name" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="mark">Mark</label>
+              <input type="number" id="mark" ng-model="selectedProduct.mark" step="0.1" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="major">Major</label>
+              <select id="major" ng-model="selectedProduct.major" class="form-control" required>
+                <option value="Software Development">Software Development</option>
+                <option value="Web Development">Web Development</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer">
