@@ -9,7 +9,6 @@ app.controller("StudentController", function ($scope, $http) {
       .get(API_PREFIX + "students")
       .then(function (response) {
         $scope.students = response.data;
-        console.log($scope.students);
       })
       .catch(function (error) {
         console.log(error);
@@ -33,35 +32,30 @@ app.controller("StudentController", function ($scope, $http) {
       });
   };
 
-  $scope.openDeleteModal = function(id) {
-    $scope.deleteId = id;
-    console.log($scope.deleteId);
+  $scope.openDeleteModal = function(studentId) {
+    // Lặp qua các sinh viên để tìm key tương ứng với ID sinh viên
+    for (var key in $scope.students) {
+      if ($scope.students[key].id === studentId) {
+        $scope.deleteKey = key;
+        break;
+      }
+    }
+    console.log($scope.deleteKey);  // Kiểm tra key đã tìm thấy
     $("#deleteProductModal").modal("show");
   };
   
-  $scope.deleteStudent = function() {
-    // Đầu tiên, tìm key của sinh viên cần xóa
-    firebase.database().ref('students').once('value').then(function(snapshot) {
-      snapshot.forEach(function(childSnapshot) {
-        var key = childSnapshot.key; // key ngẫu nhiên
-        var student = childSnapshot.val(); // dữ liệu sinh viên
-  
-        // Kiểm tra nếu ID của sinh viên trùng khớp với deleteId
-        if (student.id === $scope.deleteId) {
-          // Xóa sinh viên từ Firebase
-          firebase.database().ref('students/' + key).remove()
-            .then(function() {
-              console.log('Student deleted successfully');
-              $scope.getProducts(); // Cập nhật lại danh sách sản phẩm sau khi xóa
-            })
-            .catch(function(error) {
-              console.error('Error deleting student:', error);
-            });
-        }
+
+  $scope.deleteStudent = function () {
+    $http
+      .delete(API_PREFIX + "students/" + $scope.deleteKey)
+      .then(function (response) {
+        $("#deleteProductModal").modal("hide");
+        $scope.getStudents();
+      })
+      .catch(function (error) {
+        console.log(error);
       });
-    });
   };
-  
 
   $scope.openEditProductModal = function (id) {
     $scope.editId = id;
